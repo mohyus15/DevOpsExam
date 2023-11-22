@@ -1,8 +1,8 @@
 version = 0.1
 [default.deploy.parameters]
-stack_name = "devExam2023"
+stack_name = "devOps2001"
 resolve_s3 = true
-s3_prefix = "devExam2023"
+s3_prefix = "devOps2001"
 region = "eu-west-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
