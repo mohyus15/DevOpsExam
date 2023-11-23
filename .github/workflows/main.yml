@@ -16,9 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
-
-      - name: Install Serverless Framework
+          python-version: 3.8
         run: |
           pip install serverless
           sls plugin install -n serverless-python-requirements
