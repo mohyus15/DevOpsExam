@@ -1,4 +1,4 @@
-name: Deploy Lambda Function
+name: SAM Deploy
 
 on:
   push:
@@ -7,40 +7,38 @@ on:
 
 jobs:
   deploy:
-    name: Deploy Lambda Function
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Print repository contents
+        run: ls -R
+
+      - name: Navigate to SAM application directory
+        run: cd ./kjell
+
+      - name: Print current working directory
+        run: pwd
 
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1  # Replace with your AWS region
+          aws-region: eu-west-1
 
-  
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3.9
-          sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
-          python3 --version
+      - name: Install SAM CLI
+        run: pip install aws-sam-cli
 
-      - name: Check SAM CLI Version
-        run: sam --version
-
-      - name: Print Working Directory
-        run: pwd
-
-      - name: List Files in Working Directory
-        run: ls -R
-
-      - name: Build Lambda Function
+      - name: Build SAM application
         run: sam build -t kjell/template.yaml
 
-      - name: Deploy Lambda Function
-        run: sam deploy --template-file .aws-sam/build/template.yaml --no-confirm-changeset --parameter-overrides ParameterKey1=Value1 ParameterKey2=Value2
-
-
+      - name: Deploy SAM application
+        run: sam deploy -t kjell/template.yaml --no-confirm-changeset --capabilities CAPABILITY_IAM
