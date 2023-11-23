@@ -1,4 +1,4 @@
-name: Deploy Lambda
+name: Deploy Serverless Application
 
 on:
   push:
@@ -7,21 +7,28 @@ on:
 
 jobs:
   deploy:
-    name: deploy
+    name: Deploy
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
+        python-version: [3.8]  # Choose your desired Python version
     steps:
 
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-    - name: serverless deploy
-      uses: serverless/github-action@master
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Serverless Framework
+      run: |
+        npm install -g serverless
+
+    - name: Deploy with Serverless
+      run: |
+        serverless deploy
       with:
         args: deploy
       env:
