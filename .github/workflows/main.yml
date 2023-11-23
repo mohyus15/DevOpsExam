@@ -31,7 +31,7 @@ jobs:
         run: ls -R
 
       - name: Build Lambda Function
-        run: sam build --template-file template.yml
+        run: sam build 
 
       - name: Deploy Lambda Function
         run: sam deploy --template-file template.yml --no-confirm-changeset --parameter-overrides ParameterKey1=Value1 ParameterKey2=Value2
