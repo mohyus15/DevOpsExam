@@ -9,7 +9,7 @@ jobs:
   deploy:
     name: Deploy Lambda Function
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -21,14 +21,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1  # Replace with your AWS region
 
-      - name: Install AWS SAM CLI
-        run: |
-          curl -L "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -o sam.zip
-          unzip sam.zip -d sam
-          sudo mv sam/* /usr/local/bin/
-          sam --version
+      - name: Check SAM CLI Version
+        run: sam --version
 
-      - name: Build and Deploy Lambda Function
-        run: |
-          sam build
-          sam deploy --no-confirm-changeset --parameter-overrides ParameterKey1=Value1 ParameterKey2=Value2
+      - name: Print Working Directory
+        run: pwd
+
+      - name: List Files in Working Directory
+        run: ls -R
+
+      - name: Build Lambda Function
+        run: sam build --template-file template.yml
+
+      - name: Deploy Lambda Function
+        run: sam deploy --template-file template.yml --no-confirm-changeset --parameter-overrides ParameterKey1=Value1 ParameterKey2=Value2
+
