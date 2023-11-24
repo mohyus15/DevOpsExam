@@ -18,25 +18,28 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
-          
+          aws-region: your-aws-region
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
       - name: Build and push Docker image to ECR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          echo "::set-env name=DOCKER_TAG::$(echo ${GITHUB_SHA::12})"
+          COMMIT_HASH=$(git rev-parse --short=7 HEAD)
+          IMAGE_NAME=your-ecr-repository-url:${COMMIT_HASH}
+          
           docker buildx create --use
           docker buildx build --platform linux/amd64 --push \
-            -t your-ecr-repository-url:${DOCKER_TAG} \
+            -t ${IMAGE_NAME} \
             -t your-ecr-repository-url:latest \
             .
 
-          echo "::set-output name=ECR_IMAGE_URL::your-ecr-repository-url:${DOCKER_TAG}"
+          echo "::set-output name=ECR_IMAGE_URL::${IMAGE_NAME}"
 
       - name: Store ECR image URL as an output variable
         id: set-ecr-image-url
-        run: echo "ECR_IMAGE_URL=${{ steps.build-and-push.outputs.ECR_IMAGE_URL }}" >> $GITHUB_ENV
+        run: echo "ECR_IMAGE_URL=${{ steps.build-and-publish.outputs.ECR_IMAGE_URL }}" >> $GITHUB_ENV
 
   deploy-latest-tag:
     needs: build-and-publish
