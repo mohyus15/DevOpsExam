@@ -41,3 +41,4 @@ jobs:
 
       - name: Deploy SAM application
         run: sam deploy -t kjell/template.yaml --no-confirm-changeset --capabilities CAPABILITY_IAM
+#        
