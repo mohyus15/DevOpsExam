@@ -1,16 +1,22 @@
-# Bruk et offisielt Python-bilde som grunnlag
-FROM python:3.8-slim
+# Use an official Python image as the base image
+FROM python:3.9-slim
 
-# Angi arbeidskatalogen i beholderen
-WORKDIR /app
+# Set the working directory in the container
+WORKDIR /kjell/hello_world
 
-# Kopier Python-koden og krav til arbeidskatalogen
-COPY . .
+# Copy the requirements file into the container at /kjell/hello_world
+COPY requirements.txt .
 
-# Installer nødvendige Python-avhengigheter
+# Create a virtual environment and activate it
+RUN python -m venv venv
+ENV PATH="/kjell/hello_world/venv/bin:$PATH"
+
+# Install dependencies
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# CMD for å kjøre Python-koden
+# Copy the contents of the local src directory to the working directory
+COPY . .
+
+# Specify the command to run on container start
 CMD ["python", "app.py"]
-
-
