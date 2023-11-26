@@ -34,7 +34,7 @@ def lambda_handler(event, context):
                     }
                 },
                 SummarizationAttributes={
-                    'MinConfidence': 80,  # Confidence level threshold
+                    'MinConfidence': 80,  # Confidence level threshold#
                     'RequiredEquipmentTypes': ['FACE_COVER']
                 }
             )
