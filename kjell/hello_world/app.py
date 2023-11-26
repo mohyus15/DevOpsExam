@@ -8,15 +8,15 @@ import os
 # Instruksjoner for å kjøre ... (Kan sikkert lage container senere ..)
 #
 # pip3 install -r requirements.txt
-# python3 app.py
-##
+## python3 app.py
+###
 # Hilsen Kjell
 
 s3_client = boto3.client('s3', region_name='eu-west-1')
 rekognition_client = boto3.client('rekognition', region_name='eu-west-1')
 # Oppgave 1A
-BUCKET_NAME = "kandidatnr2001"
-
+#BUCKET_NAME = "kandidatnr2001"#
+BUCKET_NAME = os.environ.get('BUCKET_NAME')
 def lambda_handler(event, context):
 
     # List all objects in the S3 bucket
@@ -34,7 +34,7 @@ def lambda_handler(event, context):
                     }
                 },
                 SummarizationAttributes={
-                    'MinConfidence': 80,  # Confidence level threshold#
+                    'MinConfidence': 80,  # Confidence level threshold
                     'RequiredEquipmentTypes': ['FACE_COVER']
                 }
             )
@@ -46,4 +46,4 @@ def lambda_handler(event, context):
     }
 
 print(lambda_handler(None, None))
-###
+####
