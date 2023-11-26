@@ -23,7 +23,7 @@ jobs:
     - name: Build and Push Docker image
       run: |
         COMMIT_HASH=$(git rev-parse --short=8 HEAD)
-        IMAGE_URI=your-account-id.dkr.ecr.your-region.amazonaws.com/your-ecr-repo
+        IMAGE_URI=244530008913.dkr.ecr.eu-west-1.amazonaws.com/2001repo
 
         docker build -t $IMAGE_URI:$COMMIT_HASH .
         docker tag $IMAGE_URI:$COMMIT_HASH $IMAGE_URI:latest
