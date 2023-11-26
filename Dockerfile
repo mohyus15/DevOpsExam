@@ -1,4 +1,4 @@
-### Stage 1: Build the application
+#### Stage 1: Build the application
 FROM maven:3.6-jdk-11 AS builder
 WORKDIR /app
 COPY . .

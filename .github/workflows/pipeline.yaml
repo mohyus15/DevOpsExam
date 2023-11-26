@@ -1,0 +1,53 @@
+name: SAM Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Print repository contents
+      run: ls -R
+
+    - name: Navigate to SAM application directory
+      run: cd ./kjell
+
+    - name: Print current working directory
+      run: pwd
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-1 # Region
+
+    - name: Install SAM CLI
+      run: |
+        pip install aws-sam-cli
+
+    - name: Extract S3 Bucket Name
+      id: extract_s3_bucket
+      run: echo "::set-output name=s3_bucket::$(python extract_s3_bucket.py)"
+
+    - name: Deploy SAM application
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        sam deploy -t kjell/template.yaml \
+          --stack-name devOps2001 \
+          --s3-bucket ${{ steps.extract_s3_bucket.outputs.s3_bucket }} \
+          --no-confirm-changeset \
+          --capabilities CAPABILITY_IAM \
+          --debug > deployment.log
