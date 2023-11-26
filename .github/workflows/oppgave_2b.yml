@@ -20,7 +20,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
     - name: Build and Push Docker image
-      run: docker build -t $IMAGE_URI:$COMMIT_HASH .
     - name: Deploy ECR  application
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: |
