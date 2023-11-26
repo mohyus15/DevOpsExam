@@ -30,5 +30,5 @@ jobs:
       if: github.ref == 'refs/heads/main'
       run: |
         docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/2001repo:$GITHUB_SHA
-        docker tag 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA 244530008913.dkr.ecr.eu-west-1.amazonaws.com/2001repo
+        docker tag 244530008913.dkr.ecr.eu-west-1.amazonaws.com/2001repo:$GITHUB_SHA 244530008913.dkr.ecr.eu-west-1.amazonaws.com/2001repo
         docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/2001repo
