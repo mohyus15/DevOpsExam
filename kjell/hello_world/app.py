@@ -8,7 +8,7 @@ import os
 # Instruksjoner for å kjøre ... (Kan sikkert lage container senere ..)
 #
 # pip3 install -r requirements.txt
-# python3 app.py
+## python3 app.py
 #
 # Hilsen Kjell
 
