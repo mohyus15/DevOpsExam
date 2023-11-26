@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-      - branch_for_testing
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -44,4 +42,8 @@ jobs:
       - name: Deploy SAM application
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: sam deploy -t kjell/template.yaml --no-confirm-changeset --capabilities CAPABILITY_IAM
+<<<<<<< HEAD
 #
+=======
+#        
+>>>>>>> origin/main
