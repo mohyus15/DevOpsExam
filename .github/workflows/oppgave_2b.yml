@@ -1,4 +1,4 @@
-name: Build and Publish to ECR and Terraform
+name: Build and Deploy
 
 on:
   push:
@@ -41,12 +41,7 @@ jobs:
           docker push $IMAGE_URI:$COMMIT_HASH
           docker push $IMAGE_URI:latest
 
-  terraform-apply:
-    needs: build-and-publish
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
+      - name: Checkout repository for Terraform
         uses: actions/checkout@v2
 
       - name: Set up AWS credentials for Terraform
@@ -55,6 +50,14 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
+
+      - name: Check if on main branch
+        run: |
+          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" != "refs/heads/main" ]; then
+            echo "Terraform will only run on the main branch. Exiting..."
+            exit 0
+          fi
+        shell: bash
 
       - name: Configure Terraform
         run: |
