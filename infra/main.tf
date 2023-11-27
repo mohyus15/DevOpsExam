@@ -1,7 +1,7 @@
 variable "service_name" {
   description = "Navnet på App Runner-tjenesten"
   type        = string
-  default     = "2001"  #
+  default     = "terraform2001" 
 }
 
 resource "aws_iam_role" "role_for_apprunner_service" {
@@ -28,14 +28,14 @@ data "aws_iam_policy_document" "policy" {
     actions   = ["rekognition:*"]
     resources = ["*"]
   }
-  
-  statement  {
+
+  statement {
     effect    = "Allow"
     actions   = ["s3:*"]
     resources = ["*"]
   }
 
-  statement  {
+  statement {
     effect    = "Allow"
     actions   = ["cloudwatch:*"]
     resources = ["*"]
@@ -58,8 +58,8 @@ resource "aws_apprunner_service" "service" {
 
   instance_configuration {
     instance_role_arn = aws_iam_role.role_for_apprunner_service.arn
-    cpu               = 256  # Endret fra standardverdi
-    memory            = 1024 # Endret fra standardverdi
+    cpu               = 256
+    memory            = 1024
   }
 
   source_configuration {
@@ -70,7 +70,7 @@ resource "aws_apprunner_service" "service" {
       image_configuration {
         port = "8080"
       }
-      image_identifier      = "244530008913.dkr.ecr.eu-west-1.amazonaws.com/kjell:latest"
+      image_identifier      = "244530008913.dkr.ecr.eu-west-1.amazonaws.com/2001repo:latest"  
       image_repository_type = "ECR"
     }
     auto_deployments_enabled = true
