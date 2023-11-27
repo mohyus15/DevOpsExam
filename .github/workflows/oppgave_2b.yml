@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - branch_for_testing
 
 jobs:
   build-and-publish:
