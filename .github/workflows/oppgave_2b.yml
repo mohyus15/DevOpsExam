@@ -1,4 +1,4 @@
-name: Build and Publish to ECR
+name: Build and Publish to ECR and Terraform
 
 on:
   push:
